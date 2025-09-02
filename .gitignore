@@ -1,0 +1,17 @@
+# Entorno virtual
+venv/
+*.pyc
+__pycache__/
+
+# Configuración local
+.env
+
+# Archivos temporales
+*.sqlite3
+*.log
+*.pot
+*.pyc
+.DS_Store
+
+# Media local
+/media/
