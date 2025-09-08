@@ -1,3 +1,8 @@
+0.Admin 
+http://localhost:8000/admin/
+
+
+
 1. Usuarios
 
 Registro
