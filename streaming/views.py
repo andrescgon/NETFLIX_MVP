@@ -17,21 +17,25 @@ from subscriptions.permissions import EsSuscriptorActivo
 from uploader.models import MediaAsset
 from content.models import Pelicula
 from profiles.models import Perfil
+from history.models import Historial  # mapea a public.historial
+from django.core.signing import BadSignature
 
-# 👇 importa tu modelo mapeado a public.historial
-from history.models import Historial
+COOKIE_NAME = "perfil_activo"
+COOKIE_SALT = "perfil.activo.v1"
 
-
-# =========================
-# Helpers para firmar URLs
-# =========================
 def _sign_download(asset_id: int, exp_ts: int) -> str:
+    """
+    Firma HMAC-SHA256 sobre "<asset_id>:<exp_ts>" con SECRET_KEY.
+    """
     msg = f"{asset_id}:{exp_ts}".encode()
     key = settings.SECRET_KEY.encode()
     return hmac.new(key, msg, hashlib.sha256).hexdigest()
 
 
 def _verify_download(asset_id: int, exp_ts: int, token: str) -> bool:
+    """
+    Verifica expiración y la firma HMAC.
+    """
     try:
         exp_ts = int(exp_ts)
     except (TypeError, ValueError):
@@ -43,7 +47,10 @@ def _verify_download(asset_id: int, exp_ts: int, token: str) -> bool:
 
 
 def _get_or_create_historial_hoy(perfil_id: int, pelicula_id: int) -> Historial:
-    """Upsert por día (perfil + película + fecha)."""
+    """
+    Upsert por día (perfil + película + fecha).
+    Si existe un registro hoy, lo retorna; si no, lo crea.
+    """
     hoy = timezone.localdate()
     h = (Historial.objects
          .filter(id_perfil=perfil_id, id_pelicula=pelicula_id, fecha_vista__date=hoy)
@@ -62,7 +69,7 @@ class PlayPeliculaView(APIView):
     Requiere: usuario autenticado + suscripción activa + perfil válido.
 
     Query params:
-      - perfil (obligatorio): id del perfil que reproduce
+      - perfil (opcional): id del perfil que reproduce. Si no viene, usa cookie de perfil activo.
       - calidad (opcional): '1080p' | '720p' | '480p' | '360p'
       - trailer=true/false (opcional)
     """
@@ -70,16 +77,27 @@ class PlayPeliculaView(APIView):
     PREFERRED = ("1080p", "720p", "480p", "360p")
 
     def get(self, request, pelicula_id: int):
-        # 1) Película existente
+
         get_object_or_404(Pelicula, pk=pelicula_id)
 
-        # 2) Perfil obligatorio y debe pertenecer al usuario
+        # 1) Tomar perfil: querystring o cookie firmada
         perfil_id = request.query_params.get("perfil")
         if not perfil_id:
-            return Response({"detail": "Debes indicar ?perfil=<id_perfil>."}, status=400)
-        get_object_or_404(Perfil, pk=perfil_id, usuario_id=request.user.id_usuario)
+            try:
+                perfil_id = request.get_signed_cookie(COOKIE_NAME, salt=COOKIE_SALT)
+            except (KeyError, BadSignature):
+                perfil_id = None
 
-        # 3) Seleccionar asset
+        if not perfil_id:
+            return Response(
+                {"detail": "No hay perfil activo. Llama a POST /api/perfiles/<id>/activar/."},
+                status=400
+            )
+
+        # Valida que el perfil pertenezca al usuario
+        get_object_or_404(Perfil, pk=perfil_id, usuario=request.user)
+
+        # 3) Seleccionar asset (por calidad o mejor disponible)
         calidad = request.query_params.get("calidad")
         trailer_q = request.query_params.get("trailer")
         es_trailer = None
@@ -104,9 +122,9 @@ class PlayPeliculaView(APIView):
         if not asset:
             raise Http404("No hay media para esta película.")
 
-        # 4) === HISTORIAL: crea/actualiza automáticamente el registro del día ===
+        # 4) Historial: crea/actualiza automáticamente el registro del día
         historial = _get_or_create_historial_hoy(int(perfil_id), int(pelicula_id))
-        # (Opcional) Si quieres resetear "terminado" cuando vuelve a reproducir:
+        # (Opcional) resetear terminado si vuelve a reproducir:
         # if historial.terminado:
         #     historial.terminado = False
         #     historial.save(update_fields=["terminado"])
@@ -121,7 +139,7 @@ class PlayPeliculaView(APIView):
         return Response({
             "pelicula_id": pelicula_id,
             "asset_id": asset.id,
-            "historial_id": historial.id_historial,  # 👈 devuelve el historial creado/actualizado
+            "historial_id": historial.id_historial,  # para pings de progreso opcionales
             "url": stream_url,
             "calidad": asset.calidad,
             "mime_type": asset.mime_type,
@@ -132,7 +150,7 @@ class PlayPeliculaView(APIView):
 
 class ListStreamsView(APIView):
     """
-    Lista todas las variantes disponibles para una película.
+    Lista todas las variantes disponibles para una película (útil para selector de calidad).
     """
     permission_classes = [IsAuthenticated, EsSuscriptorActivo]
 
@@ -170,17 +188,24 @@ class StreamFileView(APIView):
         exp = request.query_params.get("exp")
         perfil_id = request.query_params.get("perfil")
 
-        if not exp or not perfil_id:
+        if not exp:
             raise Http404("Parámetros inválidos.")
 
         if not _verify_download(asset_id, exp, token):
             raise Http404("Link vencido o inválido.")
 
-        get_object_or_404(Perfil, pk=perfil_id, usuario_id=request.user.id_usuario)
+        # Perfil: parámetro > cookie; si no hay ninguno, error
+        if perfil_id:
+            get_object_or_404(Perfil, pk=perfil_id, usuario_id=request.user.id_usuario)
+        else:
+            if not getattr(request, "perfil_activo", None):
+                raise Http404("Perfil no especificado ni activo.")
+            perfil_id = request.perfil_activo.id_perfil
 
         asset = get_object_or_404(MediaAsset, pk=asset_id)
 
         if asset.remote_url:
+            # Para producción considera URLs firmadas del storage (S3, etc.)
             return HttpResponseRedirect(asset.remote_url)
 
         if not asset.archivo:

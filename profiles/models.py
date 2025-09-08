@@ -11,7 +11,7 @@ class Perfil(models.Model):
     )
     nombre = models.CharField(max_length=50)
     edad = models.IntegerField(null=True, blank=True)
-    es_admin = models.BooleanField(default=False)  # ← Solo si agregaste la columna
+    es_admin = models.BooleanField(default=True)  # ← Solo si agregaste la columna
 
     class Meta:
         db_table = 'perfiles'
