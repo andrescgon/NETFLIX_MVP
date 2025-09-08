@@ -18,18 +18,18 @@ Con esto no es necesario estar colocando el token de acceso cada que se pasa a u
 
 ADMINS son los encargados de
 
-0. Admin
+0.Admin
 Permite realizar todo
 http://localhost:8000/admin/
 correo: admin123@gmail.com
 contraseña: adminnice123
 
-0.1 Admin con limitaciones
+0.1.Admin con limitaciones
 http://localhost:8000/admin/
 correo: andre@gmail.com
 contraseña: andres123
 
-1. Usuarios
+1.Usuarios
 
 Registro
 http://localhost:8000/api/users/register/
