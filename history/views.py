@@ -1,14 +1,10 @@
-# history/views.py
 from datetime import timedelta
-
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.core.signing import BadSignature
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
 from subscriptions.permissions import EsSuscriptorActivo
 from profiles.models import Perfil
 from content.models import Pelicula
@@ -16,7 +12,7 @@ from .models import Historial
 from .serializers import HistorialSerializer
 
 
-# === Config de cookie de perfil activo (debe coincidir con profiles/views.py) ===
+
 COOKIE_NAME = "perfil_activo"
 COOKIE_SALT = "perfil.activo.v1"
 
@@ -54,86 +50,7 @@ def _perfil_id_from_cookie(request):
         return None
 
 
-# ---------------------- Vistas ----------------------
-class StartHistoryView(APIView):
-    """
-    Crea/actualiza el historial del día cuando el usuario inicia la reproducción.
-    POST body: { "perfil_id": int, "pelicula_id": int, "duration": (opcional, segundos) }
-    """
-    permission_classes = [IsAuthenticated, EsSuscriptorActivo]
-
-    def post(self, request):
-        perfil_id = request.data.get('perfil_id')
-        pelicula_id = request.data.get('pelicula_id')
-
-        if not perfil_id or not pelicula_id:
-            return Response({"detail": "perfil_id y pelicula_id son obligatorios."}, status=400)
-
-        _perfil_del_usuario_o_404(request.user, int(perfil_id))
-        get_object_or_404(Pelicula, pk=int(pelicula_id))
-
-        h = _get_or_create_historial_hoy(int(perfil_id), int(pelicula_id))
-        ser = HistorialSerializer(h)
-        return Response({"historial": ser.data})
-
-
-class PingHistoryView(APIView):
-    """
-    Guarda progreso periódico durante la reproducción.
-    POST body: { "historial_id": int, "position": int }  (position en segundos)
-    """
-    permission_classes = [IsAuthenticated, EsSuscriptorActivo]
-
-    def post(self, request):
-        historial_id = request.data.get('historial_id')
-        position = request.data.get('position')
-
-        if historial_id is None or position is None:
-            return Response({"detail": "historial_id y position son obligatorios."}, status=400)
-
-        h = get_object_or_404(Historial, pk=int(historial_id))
-        _perfil_del_usuario_o_404(request.user, h.id_perfil)
-
-        position = int(position)
-        if position > (h.progreso_segundos or 0):
-            h.progreso_segundos = position
-            h.save(update_fields=['progreso_segundos'])
-
-        return Response({"ok": True, "progreso_segundos": h.progreso_segundos})
-
-
-class FinishHistoryView(APIView):
-    """
-    Marca el historial como terminado.
-    POST body: { "historial_id": int, "position": (opcional, int) }
-    """
-    permission_classes = [IsAuthenticated, EsSuscriptorActivo]
-
-    def post(self, request):
-        historial_id = request.data.get('historial_id')
-        position = request.data.get('position')
-
-        if historial_id is None:
-            return Response({"detail": "historial_id es obligatorio."}, status=400)
-
-        h = get_object_or_404(Historial, pk=int(historial_id))
-        _perfil_del_usuario_o_404(request.user, h.id_perfil)
-
-        if position is not None:
-            position = int(position)
-            if position > (h.progreso_segundos or 0):
-                h.progreso_segundos = position
-
-        # si existen las columnas, se actualizan; de lo contrario, no pasa nada
-        if hasattr(h, "terminado"):
-            h.terminado = True
-            h.save(update_fields=['progreso_segundos', 'terminado'])
-        else:
-            h.save(update_fields=['progreso_segundos'])
-
-        return Response({"ok": True})
-
-
+# ---------------------- Vistas ---------------------
 class RecentHistoryView(APIView):
     """
     GET /api/history/recent/
@@ -185,7 +102,7 @@ class RecentHistoryView(APIView):
             .order_by("-fecha_vista")[:limit]
         )
 
-        # ---- Mapear id_pelicula -> título (evitar N+1) ----
+
         pelicula_ids = list({h.id_pelicula for h in qs})
         titulos = (
             Pelicula.objects
@@ -201,9 +118,6 @@ class RecentHistoryView(APIView):
                 "pelicula_id": h.id_pelicula,
                 "pelicula_titulo": titulo_map.get(h.id_pelicula),
                 "fecha_vista": h.fecha_vista,
-                # ocultamos progreso/terminado en la respuesta pública
-                # "progreso_segundos": getattr(h, "progreso_segundos", None),
-                # "terminado": getattr(h, "terminado", None),
             })
 
         return Response({
