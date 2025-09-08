@@ -2,14 +2,21 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
+# === Paths base ===
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-t&6ky(nfj4ong)8fm7ll&soy_tw@3p!w@-zgru3_6!#umyrm)c'
-DEBUG = True
+# === Seguridad / Debug desde .env ===
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key")
+DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
 
-ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://*.loca.lt"]
+# Hosts y CSRF confiables
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "DJANGO_CSRF_ORIGINS",
+    "http://localhost,http://127.0.0.1"
+).split(",")
 
+# === Apps ===
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -28,13 +35,14 @@ INSTALLED_APPS = [
     "uploader",
 ]
 
+# === Middleware ===
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    'profiles.middleware.PerfilActivoMiddleware', # ---
+    "profiles.middleware.PerfilActivoMiddleware",  # <— tu middleware de perfil activo
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -58,20 +66,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
+# === Base de Datos (Docker + env) ===
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "DataBaseNetflix",
-        "USER": "postgres",
-        "PASSWORD": "1234",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.getenv("POSTGRES_DB", "DataBaseNetflix"),
+        "USER": os.getenv("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "1234"),
+        "HOST": os.getenv("POSTGRES_HOST", "db"),     # en docker-compose el servicio se llama "db"
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
         "OPTIONS": {
-            "options": "-c search_path=privado,public"
+            "options": os.getenv("PGOPTIONS", "-c search_path=privado,public")
         },
     }
 }
 
+# === Validadores de password ===
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -79,19 +89,24 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# === i18n / TZ ===
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# === Archivos estáticos ===
 STATIC_URL = "static/"
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# === CORS (si usas front local) ===
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://*.loca.lt",
 ]
 
+# === JWT ===
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -109,16 +124,16 @@ REST_FRAMEWORK = {
     ),
 }
 
-# ====== MEDIA ======
+# === MEDIA (montado como volumen) ===
 MEDIA_URL = "/media/"
-MEDIA_ROOT = Path(r"C:\Users\andre\OneDrive\Escritorio\media")
-  # => C:\Users\andre\OneDrive\Escritorio\netflix_mvp\media
+MEDIA_ROOT = os.getenv("MEDIA_ROOT", str(BASE_DIR / "media"))
 
+# === Backends de autenticación ===
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
-# # MercadoPago (cuando lo uses)
+# === MercadoPago (cuando lo uses) ===
 # MP_ACCESS_TOKEN = os.getenv("MP_ACCESS_TOKEN", "")
 # FRONTEND_SUCCESS_URL = os.getenv("FRONTEND_SUCCESS_URL", "http://localhost:3000/success")
 # FRONTEND_CANCEL_URL  = os.getenv("FRONTEND_CANCEL_URL", "http://localhost:3000/cancel")
