@@ -7,8 +7,9 @@ docker compose up -d --build
 
 Ejecutar los siguientes dos comandos ahí mismo en la consola o no va a correr 🙂
 
-docker cp dump.backup netflix_mvp_db:/dump.backup
-docker exec -it netflix_mvp_db pg_restore -U postgres -d DataBaseNetflix --clean --if-exists --no-owner --no-privileges /dump.backup
+1. docker cp dump.backup netflix_mvp_db:/dump.backup
+
+2. docker exec -it netflix_mvp_db pg_restore -U postgres -d DataBaseNetflix --clean --if-exists --no-owner --no-privileges /dump.backup
 
 
 Una vez dentro de la aplicación, en la parte superior derecha aparece un “log in” si se entra directamente a /api/.
