@@ -1,7 +1,22 @@
-0.Admin 
+docker compose up -d --build
 
+
+docker exec -it netflix_mvp_db psql -U postgres -d DataBaseNetflix -c "CREATE SCHEMA IF NOT EXISTS privado AUTHORIZATION postgres;"  
+
+docker volume rm $(docker volume ls -q | findstr pgdata)     
+
+
+0.Admin 
+permite realizar todo
 http://localhost:8000/admin/
-correo :
+correo :admin123@gmail.com
+contraseña:adminnice123
+
+0.1 Admin con limitaciones
+http://localhost:8000/admin/
+correo :andre@gmail.com
+contraseña:andres123
+
 
 1. Usuarios
 
