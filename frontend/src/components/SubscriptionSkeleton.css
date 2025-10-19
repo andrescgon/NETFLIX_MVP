@@ -1,0 +1,69 @@
+.subscription-title-skeleton {
+  margin-bottom: 30px;
+}
+
+.subscription-card-skeleton {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.subscription-header-skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 24px;
+}
+
+.subscription-header-skeleton > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.status-skeleton {
+  margin-top: 8px;
+}
+
+.subscription-details-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.detail-row-skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subscription-benefits-skeleton {
+  margin-bottom: 32px;
+}
+
+.benefits-title-skeleton {
+  margin-bottom: 16px;
+}
+
+.benefits-list-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefit-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.subscription-actions-skeleton {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}

@@ -1,0 +1,574 @@
+/* ==================== MOVIES PAGE ==================== */
+.movies-page {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.movies-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1.5rem;
+}
+
+/* ==================== HEADER ==================== */
+.movies-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.movies-header-left h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.movies-header-left p {
+  font-size: 1rem;
+  color: #999;
+}
+
+.btn-add-movie {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+}
+
+.btn-add-movie:hover {
+  background: linear-gradient(135deg, #f40612 0%, #d10813 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(229, 9, 20, 0.5);
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+}
+
+/* ==================== CONTROLS ==================== */
+.movies-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.9rem 3rem 0.9rem 1rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #e50914;
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
+
+.movies-count {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+/* ==================== TABLE ==================== */
+.movies-table-container {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.movies-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.movies-table thead {
+  background: #0f0f0f;
+}
+
+.movies-table th {
+  padding: 1rem;
+  text-align: left;
+  color: #999;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #333;
+}
+
+.movies-table tbody tr {
+  border-bottom: 1px solid #2a2a2a;
+  transition: background 0.2s ease;
+}
+
+.movies-table tbody tr:hover {
+  background: rgba(229, 9, 20, 0.05);
+}
+
+.movies-table td {
+  padding: 1rem;
+  color: #fff;
+  vertical-align: middle;
+}
+
+/* ==================== MOVIE THUMBNAIL ==================== */
+.movie-thumbnail {
+  width: 80px;
+  height: 45px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-thumbnail {
+  font-size: 1.5rem;
+  opacity: 0.3;
+}
+
+/* ==================== MOVIE INFO ==================== */
+.movie-title-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.movie-title {
+  font-weight: 500;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.movie-description {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* ==================== BADGES ==================== */
+.badge {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-classification {
+  background: rgba(229, 9, 20, 0.2);
+  color: #e50914;
+  border: 1px solid rgba(229, 9, 20, 0.3);
+}
+
+.badge-genre {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ccc;
+  border: 1px solid #333;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.genres-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+/* ==================== ACTION BUTTONS ==================== */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  color: #fff;
+  padding: 0.5rem 0.7rem;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+}
+
+.btn-edit:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+.btn-assets:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #a855f7;
+}
+
+.btn-delete:hover {
+  background: rgba(229, 9, 20, 0.2);
+  border-color: #e50914;
+}
+
+/* ==================== NO MOVIES ==================== */
+.no-movies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  gap: 1.5rem;
+}
+
+.no-movies p {
+  font-size: 1.1rem;
+  color: #999;
+}
+
+.btn-add-first {
+  background: #e50914;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-first:hover {
+  background: #f40612;
+  transform: scale(1.05);
+}
+
+/* ==================== MODAL ==================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content h2 {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  color: #ccc;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.warning-text {
+  color: #e50914;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-cancel,
+.btn-confirm-delete {
+  flex: 1;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid #333;
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-confirm-delete {
+  background: #e50914;
+  color: #fff;
+}
+
+.btn-confirm-delete:hover {
+  background: #f40612;
+  transform: scale(1.02);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 968px) {
+  .movies-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-add-movie {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .movies-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .movies-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .movies-table {
+    min-width: 800px;
+  }
+
+  /* Hacer las columnas más pequeñas en tablet */
+  .movies-table th,
+  .movies-table td {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .movie-thumbnail {
+    width: 60px;
+    height: 35px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .btn-action {
+    padding: 0.4rem 0.6rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Convertir tabla en cards en móvil */
+  .movies-table-container {
+    overflow: visible;
+  }
+
+  .movies-table {
+    min-width: 100%;
+  }
+
+  .movies-table thead {
+    display: none;
+  }
+
+  .movies-table tbody {
+    display: block;
+  }
+
+  .movies-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .movies-table tbody tr:hover {
+    background: rgba(229, 9, 20, 0.05);
+  }
+
+  .movies-table td {
+    display: block;
+    padding: 0.5rem 0;
+    border: none;
+    text-align: left;
+  }
+
+  .movies-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #999;
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .movie-thumbnail {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 0.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .btn-action {
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .genres-list {
+    margin-top: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movies-header-left h1 {
+    font-size: 1.8rem;
+  }
+
+  .movies-header-left p {
+    font-size: 0.9rem;
+  }
+
+  .btn-add-movie {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+    padding: 0.8rem 2.5rem 0.8rem 0.8rem;
+  }
+
+  .movies-count {
+    font-size: 0.85rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .modal-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn-cancel,
+  .btn-confirm-delete {
+    padding: 0.9rem 1.2rem;
+  }
+
+  .no-movies {
+    padding: 3rem 1.5rem;
+  }
+
+  .no-movies p {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

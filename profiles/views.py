@@ -1,5 +1,5 @@
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,7 +27,7 @@ class PerfilViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
-@method_decorator(csrf_protect, name='dispatch')
+@method_decorator(csrf_exempt, name='dispatch')
 class ActivarPerfilView(APIView):
     """
     POST /api/perfiles/<perfil_id>/activar/

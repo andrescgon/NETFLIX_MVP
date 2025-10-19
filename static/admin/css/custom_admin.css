@@ -1,0 +1,234 @@
+/* Mejoras de espaciado y diseño para el panel de administración */
+
+/* Lista de usuarios - Más espacio entre filas */
+#result_list tbody tr {
+    height: 50px;
+}
+
+#result_list td,
+#result_list th {
+    padding: 12px 15px !important;
+    vertical-align: middle;
+}
+
+/* Encabezados de tabla más espaciados */
+#result_list thead th {
+    padding: 15px 15px !important;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Formularios de edición/creación */
+.form-row {
+    padding: 15px 0 !important;
+    margin-bottom: 10px;
+}
+
+/* Fieldsets con más espacio */
+fieldset.module {
+    margin-bottom: 25px !important;
+    padding: 20px !important;
+}
+
+fieldset h2 {
+    margin-bottom: 15px !important;
+    padding: 12px 15px !important;
+    font-size: 15px;
+}
+
+/* Inputs y selects más espaciados */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    padding: 10px !important;
+    margin: 5px 0 !important;
+    font-size: 14px;
+}
+
+/* Labels con más espacio */
+label {
+    display: block;
+    margin-bottom: 8px !important;
+    font-weight: 500;
+}
+
+/* Checkboxes y radios alineados */
+.checkbox-row,
+.radio-row {
+    padding: 10px 0 !important;
+}
+
+/* Filtros laterales con más espacio */
+#changelist-filter h3 {
+    padding: 12px 15px !important;
+    margin-bottom: 10px !important;
+}
+
+#changelist-filter li {
+    padding: 8px 15px !important;
+    margin-bottom: 5px;
+}
+
+/* Botones con más espacio */
+.submit-row {
+    padding: 15px 20px !important;
+    margin-top: 25px !important;
+}
+
+.submit-row input[type="submit"],
+.button,
+input[type="button"] {
+    padding: 10px 20px !important;
+    margin-right: 10px !important;
+    font-size: 14px;
+}
+
+/* Breadcrumbs con más espacio */
+.breadcrumbs {
+    padding: 15px 20px !important;
+    margin-bottom: 20px;
+}
+
+/* Acciones en la lista */
+.actions {
+    padding: 15px 0 !important;
+    margin-bottom: 15px !important;
+}
+
+.actions select {
+    margin-right: 15px !important;
+}
+
+/* Cards de contenido principal */
+#content {
+    padding: 25px !important;
+}
+
+/* Mensajes con más espacio */
+.messagelist li {
+    padding: 15px 20px !important;
+    margin-bottom: 15px !important;
+}
+
+/* Tablas inline (relaciones) */
+.inline-group .tabular tr {
+    height: 45px;
+}
+
+.inline-group .tabular td {
+    padding: 10px !important;
+}
+
+/* Mejora de legibilidad */
+body {
+    line-height: 1.6;
+}
+
+/* Grupos de permisos - horizontal filter */
+.selector {
+    margin-bottom: 20px;
+}
+
+.selector .selector-available,
+.selector .selector-chosen {
+    padding: 15px !important;
+}
+
+.selector select {
+    min-height: 200px !important;
+    padding: 10px !important;
+}
+
+.selector-available h2,
+.selector-chosen h2 {
+    padding: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+/* Links con mejor espaciado */
+#content a {
+    padding: 2px 0;
+    display: inline-block;
+}
+
+/* Campos de ayuda */
+.help {
+    display: block;
+    margin-top: 5px !important;
+    padding: 8px 12px !important;
+    background-color: #f8f9fa;
+    border-left: 3px solid #417690;
+    line-height: 1.5;
+}
+
+/* Errores con más espacio */
+.errorlist {
+    margin: 10px 0 !important;
+    padding: 12px 15px !important;
+}
+
+.errorlist li {
+    padding: 5px 0 !important;
+}
+
+/* Header con más espacio */
+#header {
+    padding: 15px 25px !important;
+}
+
+/* Paginación */
+.paginator {
+    padding: 15px 0 !important;
+    margin-top: 20px !important;
+}
+
+.paginator a,
+.paginator span {
+    padding: 8px 12px !important;
+    margin: 0 3px !important;
+}
+
+/* Mejora visual de bordes */
+.module {
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Espaciado responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+    #content {
+        padding: 15px !important;
+    }
+
+    #result_list td,
+    #result_list th {
+        padding: 8px 10px !important;
+    }
+
+    fieldset.module {
+        padding: 15px !important;
+    }
+}
+
+/* Mejora de contraste en hover */
+#result_list tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Separación entre secciones de formulario */
+.form-row + .form-row {
+    border-top: 1px solid #e8e8e8;
+    padding-top: 20px !important;
+}
+
+/* Campos readonly con mejor estilo */
+.readonly {
+    padding: 10px !important;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}

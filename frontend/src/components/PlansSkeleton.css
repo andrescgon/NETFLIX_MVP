@@ -1,0 +1,36 @@
+.plans-title-skeleton {
+  margin-bottom: 15px;
+}
+
+.plans-subtitle-skeleton {
+  margin-bottom: 40px;
+}
+
+.plan-card-skeleton {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.plan-header-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #333;
+}
+
+.plan-features-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feature-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

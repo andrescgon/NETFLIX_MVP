@@ -4,10 +4,12 @@ import hmac
 import hashlib
 
 from django.conf import settings
-from django.http import FileResponse, Http404, HttpResponseRedirect
+from django.http import FileResponse, Http404, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
+import os
+import re
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -134,7 +136,8 @@ class PlayPeliculaView(APIView):
         token = _sign_download(asset.id, exp)
 
         file_path = reverse("stream-file", args=[asset.id, token])
-        stream_url = request.build_absolute_uri(f"{file_path}?exp={exp}&perfil={perfil_id}")
+        # Usar ruta relativa en lugar de URL absoluta para que funcione con Docker
+        stream_url = f"{file_path}?exp={exp}&perfil={perfil_id}"
 
         return Response({
             "pelicula_id": pelicula_id,
@@ -177,30 +180,41 @@ class ListStreamsView(APIView):
         return Response({"pelicula_id": pelicula_id, "assets": data})
 
 
+def range_file_iterator(file_object, start, end, chunk_size=8192):
+    """
+    Generador que lee el archivo por chunks desde 'start' hasta 'end'.
+    """
+    file_object.seek(start)
+    remaining = end - start + 1
+    while remaining > 0:
+        chunk_size_to_read = min(chunk_size, remaining)
+        data = file_object.read(chunk_size_to_read)
+        if not data:
+            break
+        remaining -= len(data)
+        yield data
+
+
 class StreamFileView(APIView):
     """
     Sirve el archivo local protegido por token + expiración y perfil válido.
-    Requiere: usuario autenticado + suscripción activa.
+    SOPORTA RANGE REQUESTS para permitir seek en videos.
+    NO requiere autenticación JWT porque la URL está firmada con HMAC.
     """
-    permission_classes = [IsAuthenticated, EsSuscriptorActivo]
+    permission_classes = []  # Sin autenticación, la seguridad viene del token HMAC
 
     def get(self, request, asset_id: int, token: str):
         exp = request.query_params.get("exp")
         perfil_id = request.query_params.get("perfil")
 
-        if not exp:
+        if not exp or not perfil_id:
             raise Http404("Parámetros inválidos.")
 
         if not _verify_download(asset_id, exp, token):
             raise Http404("Link vencido o inválido.")
 
-        # Perfil: parámetro > cookie; si no hay ninguno, error
-        if perfil_id:
-            get_object_or_404(Perfil, pk=perfil_id, usuario_id=request.user.id_usuario)
-        else:
-            if not getattr(request, "perfil_activo", None):
-                raise Http404("Perfil no especificado ni activo.")
-            perfil_id = request.perfil_activo.id_perfil
+        # Validar que el perfil exista (sin verificar usuario porque no hay JWT)
+        get_object_or_404(Perfil, pk=perfil_id)
 
         asset = get_object_or_404(MediaAsset, pk=asset_id)
 
@@ -211,7 +225,48 @@ class StreamFileView(APIView):
         if not asset.archivo:
             raise Http404("Archivo no disponible.")
 
-        return FileResponse(
-            asset.archivo.open('rb'),
-            content_type=asset.mime_type or 'application/octet-stream'
-        )
+        # Obtener el path del archivo
+        file_path = asset.archivo.path
+        file_size = os.path.getsize(file_path)
+        content_type = asset.mime_type or 'video/mp4'
+
+        # Parsear el header Range si existe
+        range_header = request.META.get('HTTP_RANGE', '').strip()
+        range_match = re.match(r'bytes=(\d+)-(\d*)', range_header)
+
+        if range_match:
+            # Range Request - permitir seek en el video
+            start = int(range_match.group(1))
+            end = int(range_match.group(2)) if range_match.group(2) else file_size - 1
+
+            # Validar rango
+            if start >= file_size or end >= file_size or start > end:
+                response = StreamingHttpResponse(status=416)  # Range Not Satisfiable
+                response['Content-Range'] = f'bytes */{file_size}'
+                return response
+
+            # Abrir archivo y crear respuesta con el rango
+            file_object = open(file_path, 'rb')
+            response = StreamingHttpResponse(
+                range_file_iterator(file_object, start, end),
+                status=206,  # Partial Content
+                content_type=content_type
+            )
+            response['Content-Length'] = str(end - start + 1)
+            response['Content-Range'] = f'bytes {start}-{end}/{file_size}'
+            response['Accept-Ranges'] = 'bytes'
+
+        else:
+            # Request completo sin range
+            file_object = open(file_path, 'rb')
+            response = StreamingHttpResponse(
+                file_object,
+                content_type=content_type
+            )
+            response['Content-Length'] = str(file_size)
+            response['Accept-Ranges'] = 'bytes'
+
+        # Headers adicionales para el video
+        response['Cache-Control'] = 'no-cache, private'
+
+        return response

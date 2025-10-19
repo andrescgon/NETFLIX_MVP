@@ -1,0 +1,23 @@
+.profiles-title-skeleton {
+  margin-bottom: 50px;
+}
+
+.profiles-grid-skeleton {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+
+.profile-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.manage-btn-skeleton {
+  display: block;
+  margin: 0 auto;
+}
