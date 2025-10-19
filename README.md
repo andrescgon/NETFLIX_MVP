@@ -5,14 +5,6 @@ Después de hacer el siguiente comando:
 docker compose up -d --build
 ```
 
-Ejecutar los siguientes dos comandos ahí mismo en la consola o no va a correr 🙂
-```bash
-docker cp dump.backup netflix_mvp_db:/dump.backup
-```
-```bash
-docker exec -it netflix_mvp_db pg_restore -U postgres -d DataBaseNetflix --clean --if-exists --no-owner --no-privileges /dump.backup
-```
-
 
 Una vez dentro de la aplicación, en la parte superior derecha aparece un “log in” si se entra directamente a /api/.
 Si se entra primero a /admin/ pide de una vez que se loguee.
@@ -22,11 +14,9 @@ ADMINS
 
 | Rol                    | URL                            | Correo               | Contraseña     |
 | ---------------------- | ------------------------------ | -------------------- | -------------- |
-| Admin (acceso total)   | http://localhost:8000/admin/ | `admin123@gmail.com` | `adminnice123` |
-| Admin con limitaciones | http://localhost:8000/admin/ | `andre@gmail.com`    | `andres123`    |
+| Admin (acceso total)   | http://localhost:8000/admin/     | `admin123@gmail.com` | `adminnice123` |
 
 Admin con acceso total puede hacer de todo
-Admin con limitaciones solo puede hacer ciertas cosas como subir videos crear actores, generos, directores, peliculas
 
 Endpoints
 1) Usuarios
