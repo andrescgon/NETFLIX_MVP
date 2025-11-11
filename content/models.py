@@ -45,6 +45,7 @@ class Pelicula(models.Model):
     fecha_estreno = models.DateField(blank=True, null=True)
     duracion = models.IntegerField(blank=True, null=True)  # en minutos
     clasificacion = models.CharField(max_length=50, blank=True, null=True)
+    miniatura = models.ImageField(upload_to='peliculas/miniaturas/', blank=True, null=True)
 
     # Relaciones M2M mediante tablas puente existentes
     actores = models.ManyToManyField(Actor, through="PeliculaActor", related_name="peliculas")
@@ -53,7 +54,7 @@ class Pelicula(models.Model):
 
     class Meta:
         db_table = "peliculas"
-        managed = False
+        managed = True
 
     def __str__(self):
         return self.titulo
@@ -61,7 +62,7 @@ class Pelicula(models.Model):
 
 # ===== Tablas puente =====
 class PeliculaActor(models.Model):
-    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, db_column="id_pelicula")
+    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, db_column="id_pelicula", primary_key=True)
     actor = models.ForeignKey(Actor, on_delete=models.CASCADE, db_column="id_actor")
 
     class Meta:
@@ -71,7 +72,7 @@ class PeliculaActor(models.Model):
 
 
 class PeliculaDirector(models.Model):
-    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, db_column="id_pelicula")
+    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, db_column="id_pelicula", primary_key=True)
     director = models.ForeignKey(Director, on_delete=models.CASCADE, db_column="id_director")
 
     class Meta:
@@ -81,7 +82,7 @@ class PeliculaDirector(models.Model):
 
 
 class PeliculaGenero(models.Model):
-    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, db_column="id_pelicula")
+    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, db_column="id_pelicula", primary_key=True)
     genero = models.ForeignKey(Genero, on_delete=models.CASCADE, db_column="id_genero")
 
     class Meta:

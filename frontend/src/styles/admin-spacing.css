@@ -1,0 +1,447 @@
+/* ==================== MEJORAS DE ESPACIADO GLOBAL PARA ADMIN ==================== */
+
+/* ==================== TABLAS - MÁS ESPACIO ==================== */
+.movies-table th,
+.actors-table th,
+.directors-table th,
+.genres-table th,
+.users-table th,
+.subscriptions-table th,
+.payments-table th,
+.plans-table th {
+  padding: 1.25rem 1.5rem !important;
+  font-size: 0.9rem !important;
+}
+
+.movies-table td,
+.actors-table td,
+.directors-table td,
+.genres-table td,
+.users-table td,
+.subscriptions-table td,
+.payments-table td,
+.plans-table td {
+  padding: 1.25rem 1.5rem !important;
+  line-height: 1.6 !important;
+}
+
+.movies-table tbody tr,
+.actors-table tbody tr,
+.directors-table tbody tr,
+.genres-table tbody tr,
+.users-table tbody tr,
+.subscriptions-table tbody tr,
+.payments-table tbody tr,
+.plans-table tbody tr {
+  height: auto;
+  min-height: 65px;
+}
+
+/* ==================== HEADERS - MÁS ESPACIO ==================== */
+.movies-header,
+.actors-header,
+.directors-header,
+.genres-header,
+.users-header,
+.subscriptions-header,
+.payments-header,
+.plans-header,
+.dashboard-header {
+  margin-bottom: 2.5rem !important;
+  padding-bottom: 1rem;
+}
+
+.movies-header h1,
+.actors-header h1,
+.directors-header h1,
+.genres-header h1,
+.users-header h1,
+.subscriptions-header h1,
+.payments-header h1,
+.plans-header h1,
+.dashboard-header h1 {
+  margin-bottom: 0.75rem !important;
+}
+
+/* ==================== CONTROLES - MÁS ESPACIO ==================== */
+.movies-controls,
+.actors-controls,
+.directors-controls,
+.genres-controls,
+.users-controls,
+.subscriptions-controls,
+.payments-controls,
+.plans-controls {
+  margin-bottom: 2rem !important;
+  gap: 1.5rem !important;
+}
+
+.search-box {
+  margin-bottom: 0;
+}
+
+.search-input {
+  padding: 1rem 3.5rem 1rem 1.25rem !important;
+  font-size: 1rem !important;
+}
+
+/* ==================== BOTONES - MÁS ESPACIO Y TAMAÑO ==================== */
+.btn-add-movie,
+.btn-add-actor,
+.btn-add-director,
+.btn-add-genre,
+.btn-add-user,
+.btn-add-subscription,
+.btn-add-payment,
+.btn-add-plan,
+.btn-primary,
+.btn-secondary {
+  padding: 1rem 2rem !important;
+  font-size: 1rem !important;
+  gap: 0.75rem !important;
+}
+
+.btn-action {
+  padding: 0.65rem 0.9rem !important;
+  font-size: 1.15rem !important;
+}
+
+.action-buttons {
+  gap: 0.75rem !important;
+}
+
+/* ==================== FORMULARIOS - MÁS ESPACIO ==================== */
+.form-group {
+  margin-bottom: 1.75rem !important;
+}
+
+.form-label {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.95rem !important;
+  display: block;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  padding: 1rem 1.25rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+.form-textarea {
+  min-height: 120px !important;
+  line-height: 1.6 !important;
+}
+
+/* ==================== BADGES - MÁS ESPACIO ==================== */
+.badge,
+.status-badge,
+.subscription-badge,
+.role-badge,
+.badge-genre,
+.badge-classification {
+  padding: 0.45rem 0.9rem !important;
+  font-size: 0.85rem !important;
+  margin-right: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.genres-list,
+.roles-badges {
+  gap: 0.65rem !important;
+}
+
+/* ==================== MODALES - MÁS ESPACIO ==================== */
+.modal-overlay {
+  padding: 2rem !important;
+}
+
+.modal-content {
+  padding: 2.5rem !important;
+  max-width: 700px !important;
+}
+
+.modal-header {
+  margin-bottom: 2rem !important;
+}
+
+.modal-title {
+  font-size: 1.75rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.modal-body {
+  margin-bottom: 2rem !important;
+}
+
+.modal-footer {
+  margin-top: 2rem !important;
+  padding-top: 1.5rem !important;
+  gap: 1rem !important;
+}
+
+/* ==================== CARDS Y CONTAINERS - MÁS ESPACIO ==================== */
+.movies-table-container,
+.actors-table-container,
+.directors-table-container,
+.genres-table-container,
+.users-table-container,
+.subscriptions-table-container,
+.payments-table-container,
+.plans-table-container,
+.table-container {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card,
+.stats-grid > div {
+  padding: 1.75rem !important;
+}
+
+.stat-label {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.95rem !important;
+}
+
+.stat-value {
+  font-size: 2.25rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ==================== CHECKBOX Y RADIO - MÁS ESPACIO ==================== */
+.checkbox-label,
+.radio-label {
+  padding: 0.75rem 0 !important;
+  gap: 1rem !important;
+}
+
+.checkbox-label input[type="checkbox"],
+.radio-label input[type="radio"] {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: 0.5rem !important;
+}
+
+/* ==================== PAGINACIÓN - MÁS ESPACIO ==================== */
+.pagination {
+  margin-top: 2.5rem !important;
+  padding: 1.5rem 0 !important;
+  gap: 0.75rem !important;
+}
+
+.pagination-button,
+.page-button {
+  padding: 0.75rem 1.25rem !important;
+  font-size: 0.95rem !important;
+  min-width: 45px !important;
+}
+
+/* ==================== FILTROS - MÁS ESPACIO ==================== */
+.filter-group {
+  margin-bottom: 1.5rem !important;
+}
+
+.filter-label {
+  margin-bottom: 0.75rem !important;
+  font-size: 0.95rem !important;
+}
+
+.filter-buttons {
+  gap: 0.75rem !important;
+}
+
+.filter-button {
+  padding: 0.75rem 1.25rem !important;
+}
+
+/* ==================== ALERTS Y MENSAJES - MÁS ESPACIO ==================== */
+.alert,
+.error-message,
+.success-message,
+.warning-message,
+.info-message {
+  padding: 1.25rem 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  line-height: 1.6 !important;
+}
+
+/* ==================== LOADING STATES - MÁS ESPACIO ==================== */
+.movies-loading,
+.loading-container,
+.spinner-container {
+  min-height: 500px !important;
+  gap: 2rem !important;
+}
+
+.loading-spinner {
+  width: 60px !important;
+  height: 60px !important;
+}
+
+/* ==================== EMPTY STATES - MÁS ESPACIO ==================== */
+.empty-state,
+.no-data {
+  padding: 4rem 2rem !important;
+  gap: 1.5rem !important;
+}
+
+.empty-state-icon {
+  font-size: 4rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.empty-state-title {
+  font-size: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.empty-state-description {
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* ==================== MOVIE INFO CELLS - MÁS ESPACIO ==================== */
+.movie-title-cell {
+  gap: 0.5rem !important;
+}
+
+.movie-title {
+  font-size: 1rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.movie-description {
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+}
+
+.movie-info {
+  gap: 1rem !important;
+}
+
+.movie-thumbnail,
+.movie-thumb {
+  width: 90px !important;
+  height: 55px !important;
+}
+
+/* ==================== TABS - MÁS ESPACIO ==================== */
+.tabs-container {
+  margin-bottom: 2rem !important;
+}
+
+.tab-button {
+  padding: 1rem 1.75rem !important;
+  font-size: 1rem !important;
+}
+
+.tab-content {
+  padding: 2rem 0 !important;
+}
+
+/* ==================== STATS DASHBOARD - MÁS ESPACIO ==================== */
+.stats-grid {
+  gap: 1.5rem !important;
+  margin-bottom: 2.5rem !important;
+}
+
+.chart-container {
+  padding: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.chart-title {
+  font-size: 1.25rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* ==================== DATE INPUTS - MÁS ESPACIO ==================== */
+input[type="date"],
+input[type="datetime-local"],
+input[type="time"] {
+  padding: 1rem 1.25rem !important;
+  font-size: 1rem !important;
+}
+
+/* ==================== FILE UPLOADS - MÁS ESPACIO ==================== */
+.file-upload-area {
+  padding: 2.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.file-upload-label {
+  padding: 1rem 2rem !important;
+  font-size: 1rem !important;
+}
+
+/* ==================== MULTI-SELECT - MÁS ESPACIO ==================== */
+.multi-select-container {
+  margin-bottom: 1.75rem !important;
+}
+
+.multi-select-item {
+  padding: 0.75rem 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ==================== RESPONSIVE - MANTENER ESPACIADO EN MÓVIL ==================== */
+@media (max-width: 768px) {
+  .movies-table th,
+  .actors-table th,
+  .directors-table th,
+  .genres-table th,
+  .users-table th {
+    padding: 1rem !important;
+  }
+
+  .movies-table td,
+  .actors-table td,
+  .directors-table td,
+  .genres-table td,
+  .users-table td {
+    padding: 1rem !important;
+  }
+
+  .btn-add-movie,
+  .btn-add-actor,
+  .btn-add-director,
+  .btn-add-genre,
+  .btn-add-user {
+    padding: 0.85rem 1.5rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  .modal-content {
+    padding: 1.5rem !important;
+  }
+
+  .stat-card {
+    padding: 1.25rem !important;
+  }
+}
+
+/* ==================== MEJORA DE LEGIBILIDAD ==================== */
+body {
+  line-height: 1.6;
+}
+
+p, li, td, th, span, div {
+  line-height: 1.6;
+}
+
+/* ==================== SEPARACIÓN VISUAL ==================== */
+.section-divider {
+  margin: 2.5rem 0 !important;
+  border-top: 1px solid #333;
+}
+
+.content-section {
+  margin-bottom: 3rem !important;
+}
+
+.content-section:last-child {
+  margin-bottom: 0 !important;
+}

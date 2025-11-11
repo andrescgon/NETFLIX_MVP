@@ -5,3 +5,4 @@ router = DefaultRouter()
 router.register(r"assets", MediaAssetViewSet, basename="media-asset")
 
 urlpatterns = router.urls
+    

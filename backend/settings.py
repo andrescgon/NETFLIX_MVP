@@ -13,7 +13,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 CSRF_TRUSTED_ORIGINS = os.getenv(
     "DJANGO_CSRF_ORIGINS",
-    "http://localhost,http://127.0.0.1"
+    "http://localhost,http://127.0.0.1",
 ).split(",")
 
 # === Apps ===
@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
     "users",
     "profiles",
@@ -33,12 +34,14 @@ INSTALLED_APPS = [
     "streaming",
     "history",
     "uploader",
+    "chatbot",
 ]
 
 # === Middleware ===
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -97,14 +100,20 @@ USE_TZ = True
 
 # === Archivos estáticos ===
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # === CORS (si usas front local) ===
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:5173",  # Vite default port
     "https://*.loca.lt",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 # === JWT ===
 SIMPLE_JWT = {
@@ -122,6 +131,11 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
+    "UPLOADED_FILES_USE_URL": True,
+    # Deshabilitar CSRF para APIs (usamos JWT para autenticación)
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+    ),
 }
 
 # === MEDIA (montado como volumen) ===
@@ -138,3 +152,6 @@ AUTHENTICATION_BACKENDS = [
 # FRONTEND_SUCCESS_URL = os.getenv("FRONTEND_SUCCESS_URL", "http://localhost:3000/success")
 # FRONTEND_CANCEL_URL  = os.getenv("FRONTEND_CANCEL_URL", "http://localhost:3000/cancel")
 # MP_WEBHOOK_URL = os.getenv("MP_WEBHOOK_URL", "http://127.0.0.1:8000/api/pagos/webhook/mp/")
+
+# === Google Gemini API ===
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")

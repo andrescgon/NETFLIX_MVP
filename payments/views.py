@@ -13,8 +13,27 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from subscriptions.models import Plan, Suscripcion
 from .models import Pago
 
-# SDK de MP
+# ==================== MERCADO PAGO ====================
+# SDK de Mercado Pago
 sdk = mercadopago.SDK(settings.MP_ACCESS_TOKEN)
+
+# ==================== STRIPE (ESTRUCTURA COMENTADA) ====================
+# import stripe
+# stripe.api_key = settings.STRIPE_SECRET_KEY
+
+# ==================== PAYPAL (ESTRUCTURA COMENTADA) ====================
+# from paypalrestsdk import Payment as PayPalPayment
+# import paypalrestsdk
+#
+# paypalrestsdk.configure({
+#     "mode": settings.PAYPAL_MODE,  # sandbox o live
+#     "client_id": settings.PAYPAL_CLIENT_ID,
+#     "client_secret": settings.PAYPAL_CLIENT_SECRET
+# })
+
+# ==================== OTROS MÉTODOS (ESTRUCTURA) ====================
+# PSE, Nequi, Daviplata, etc. pueden agregarse aquí
+# Ejemplo: from wompi import WompiSDK
 
 class CrearPreferenciaView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -83,7 +102,7 @@ class MercadoPagoWebhookView(APIView):
         payment_id = request.GET.get("id") or request.GET.get("data.id")
 
         if topic != "payment" or not payment_id:
-            # compatibilidad con nuevas versiones: el payload puede venir en JSON
+
             try:
                 data = request.data
                 if isinstance(data, dict):

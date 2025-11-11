@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 from .models import Plan, Suscripcion
-from .serializers import PlanSerializer, CrearSuscripcionSerializer, MiSuscripcionSerializer
+from .serializers import PlanSerializer, CrearSuscripcionSerializer, MiSuscripcionSerializer, SuscripcionAdminSerializer
 
 
 from rest_framework.views import APIView
@@ -36,4 +36,27 @@ class VistaProtegidaDemo(APIView):
 
     def get(self, request):
         return Response({"mensaje": "Accediste a contenido premium 🎬"})
-    
+
+
+# ==================== VISTAS DE ADMINISTRACIÓN ====================
+class ListaSuscripcionesAdminView(generics.ListAPIView):
+    """Vista para listar todas las suscripciones (Admin)"""
+    permission_classes = [permissions.IsAdminUser]
+    queryset = Suscripcion.objects.all().select_related('usuario', 'plan').order_by('-fecha_inicio')
+    serializer_class = SuscripcionAdminSerializer
+
+
+class CancelarSuscripcionAdminView(APIView):
+    """Vista para cancelar una suscripción (Admin)"""
+    permission_classes = [permissions.IsAdminUser]
+
+    def post(self, request, pk):
+        try:
+            suscripcion = Suscripcion.objects.get(pk=pk)
+            suscripcion.estado = 'cancelada'
+            suscripcion.save()
+
+            serializer = SuscripcionAdminSerializer(suscripcion)
+            return Response(serializer.data, status=200)
+        except Suscripcion.DoesNotExist:
+            return Response({"detail": "Suscripción no encontrada"}, status=404)

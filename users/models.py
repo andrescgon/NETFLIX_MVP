@@ -33,13 +33,10 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=255, db_column='password')
     fecha_registro = models.DateTimeField(db_column='fecha_registro', auto_now_add=True)
 
-    # Campos añadidos por SQL (arriba)
     is_active = models.BooleanField(default=True, db_column='is_active')
     is_staff  = models.BooleanField(default=False, db_column='is_staff')
     # is_superuser lo maneja PermissionsMixin, pero lo mapeamos a la columna existente:
     is_superuser = models.BooleanField(default=False, db_column='is_superuser')
-
-    # last_login real en BD
     last_login = models.DateTimeField(null=True, blank=True, db_column='last_login')
 
     objects = UsuarioManager()

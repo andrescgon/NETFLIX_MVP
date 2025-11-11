@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Plan, Suscripcion
+from users.models import Usuario
 
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,3 +33,24 @@ class MiSuscripcionSerializer(serializers.ModelSerializer):
 
     def get_esta_activa(self, obj):
         return obj.esta_activa()
+
+
+class SuscripcionAdminSerializer(serializers.ModelSerializer):
+    """Serializer para el panel de administración con información completa"""
+    plan = PlanSerializer()
+    usuario = serializers.SerializerMethodField()
+    id_suscripcion = serializers.IntegerField(source='id')
+
+    class Meta:
+        model = Suscripcion
+        fields = ["id_suscripcion", "usuario", "plan", "fecha_inicio", "fecha_fin", "estado"]
+
+    def get_usuario(self, obj):
+        try:
+            return {
+                'id_usuario': obj.usuario.id_usuario,
+                'name': obj.usuario.name,
+                'email': obj.usuario.email
+            }
+        except:
+            return None

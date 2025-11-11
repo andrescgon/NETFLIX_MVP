@@ -31,6 +31,8 @@ urlpatterns = [
     path("api/uploader/", include("uploader.urls")),
     path('api/streaming/', include('streaming.urls')),
     path('api/history/', include('history.urls')),
+    path('api/admin/', include('admin_api.urls')),
+    path('api/chatbot/', include('chatbot.urls')),
 
 ]
 

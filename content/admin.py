@@ -1,4 +1,3 @@
-# content/admin.py
 from django import forms
 from django.contrib import admin
 from django.db import connection
@@ -27,6 +26,7 @@ class PeliculaAdminForm(forms.ModelForm):
             "fecha_estreno",
             "duracion",
             "clasificacion",
+            "miniatura",
             "generos",
             "actores",
             "directores",
@@ -60,14 +60,17 @@ class PeliculaAdminForm(forms.ModelForm):
 class PeliculaAdmin(admin.ModelAdmin):
     form = PeliculaAdminForm
 
-    list_display = ("id_pelicula", "titulo", "clasificacion", "fecha_estreno", "duracion")
+    list_display = ("id_pelicula", "titulo", "clasificacion", "fecha_estreno", "duracion", "tiene_miniatura")
     search_fields = ("titulo", "descripcion")
     list_filter = ("clasificacion",)
     ordering = ("-fecha_estreno", "titulo")
     exclude = ("generos", "actores", "directores")
     actions = None
 
-    # --- helpers ya existentes ---
+    def tiene_miniatura(self, obj):
+        return "✅" if obj.miniatura else "❌"
+    tiene_miniatura.short_description = "Miniatura"
+
     def _to_pk_set(self, selected):
         ids = set()
         if not selected:
@@ -160,11 +163,11 @@ class ActorAdmin(admin.ModelAdmin):
     search_fields = ("nombre",)
     ordering = ("nombre",)
 
-    # Evitar que el admin intente listar relaciones (que no tienen PK 'id')
-    def get_deleted_objects(self, objs, request):
-        return [], {}, set(), []  # deletions, model_count, perms_needed, protected
 
-    # Borrado seguro: limpia la tabla puente y luego elimina el actor
+    def get_deleted_objects(self, objs, request):
+        return [], {}, set(), []  
+
+    # Borrado 
     def delete_model(self, request, obj):
         with connection.cursor() as cur:
             cur.execute(
@@ -173,7 +176,6 @@ class ActorAdmin(admin.ModelAdmin):
             )
         obj.delete()
 
-    # (opcional) borrar sin pantalla de confirmación para evitar consultas automáticas
     def delete_view(self, request, object_id, extra_context=None):
         if request.method == "POST":
             obj = self.get_object(request, object_id)

@@ -4,7 +4,6 @@ from .models import Perfil
 
 class PerfilSerializer(serializers.ModelSerializer):
     """
-    - No expone es_admin (lo maneja el backend).
     - Primer perfil del usuario => es_admin=True; los demás => False.
     - Máximo 3 perfiles por cuenta.
     - Nombre único por usuario (case-insensitive).

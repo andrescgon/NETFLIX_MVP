@@ -1,0 +1,121 @@
+.movie-row {
+  margin-bottom: 3rem;
+}
+
+.row-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e5e5e5;
+  margin-bottom: 1rem;
+  padding-left: 3%;
+  transition: all 0.3s ease;
+}
+
+.row-title:hover {
+  color: #fff;
+}
+
+.row-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.row-content {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 0 3%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.row-content::-webkit-scrollbar {
+  display: none;
+}
+
+.row-item {
+  flex: 0 0 auto;
+  width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.row-item:hover {
+  transform: translateY(-5px);
+  z-index: 10;
+}
+
+.row-arrow {
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: #fff;
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.row-container:hover .row-arrow {
+  opacity: 1;
+}
+
+.row-arrow:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.row-arrow-left {
+  left: 0;
+}
+
+.row-arrow-right {
+  right: 0;
+}
+
+@media (max-width: 1024px) {
+  .row-item {
+    width: 200px;
+  }
+
+  .row-arrow {
+    width: 40px;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .row-item {
+    width: 150px;
+  }
+
+  .row-arrow {
+    display: none;
+  }
+
+  .row-title {
+    font-size: 1.2rem;
+  }
+
+  .movie-row {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .row-item {
+    width: 120px;
+  }
+
+  .row-title {
+    font-size: 1rem;
+  }
+}

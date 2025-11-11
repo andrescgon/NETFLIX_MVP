@@ -1,7 +1,9 @@
 from rest_framework import generics, permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from django.db.models import Q
-from .models import Pelicula
-from .serializers import PeliculaListaSerializer, PeliculaDetalleSerializer
+from .models import Pelicula, Genero, Actor, Director
+from .serializers import PeliculaListaSerializer, PeliculaDetalleSerializer, GeneroSerializer, ActorSerializer, DirectorSerializer
 from subscriptions.permissions import EsSuscriptorActivo  # tu permiso
 
 class ListaPeliculasView(generics.ListAPIView):
@@ -55,3 +57,52 @@ class DetallePeliculaView(generics.RetrieveAPIView):
     serializer_class = PeliculaDetalleSerializer
     permission_classes = [permissions.IsAuthenticated, EsSuscriptorActivo]
     lookup_field = "id_pelicula"
+
+
+class FiltrosView(APIView):
+    """
+    GET /api/contenido/filtros/
+    Retorna listas de géneros, actores y directores para los filtros
+    """
+    permission_classes = [permissions.IsAuthenticated, EsSuscriptorActivo]
+
+    def get(self, request):
+        generos = Genero.objects.all().order_by('nombre')
+        actores = Actor.objects.all().order_by('nombre')
+        directores = Director.objects.all().order_by('nombre')
+
+        return Response({
+            'generos': GeneroSerializer(generos, many=True).data,
+            'actores': ActorSerializer(actores, many=True).data,
+            'directores': DirectorSerializer(directores, many=True).data,
+        })
+
+
+class ListaActoresView(generics.ListAPIView):
+    """
+    GET /api/contenido/actores/
+    Lista todos los actores
+    """
+    queryset = Actor.objects.all().order_by('nombre')
+    serializer_class = ActorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class ListaDirectoresView(generics.ListAPIView):
+    """
+    GET /api/contenido/directores/
+    Lista todos los directores
+    """
+    queryset = Director.objects.all().order_by('nombre')
+    serializer_class = DirectorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class ListaGenerosView(generics.ListAPIView):
+    """
+    GET /api/contenido/generos/
+    Lista todos los géneros
+    """
+    queryset = Genero.objects.all().order_by('nombre')
+    serializer_class = GeneroSerializer
+    permission_classes = [permissions.IsAuthenticated]
