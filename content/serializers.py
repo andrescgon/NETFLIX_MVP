@@ -41,6 +41,7 @@ class PeliculaDetalleSerializer(serializers.ModelSerializer):
     actores_detalle = ActorSerializer(source='actores', many=True, read_only=True)
     directores_detalle = DirectorSerializer(source='directores', many=True, read_only=True)
     generos_detalle = GeneroSerializer(source='generos', many=True, read_only=True)
+    tiene_video = serializers.SerializerMethodField()
 
     # Para escritura (POST/PUT)
     actores = serializers.PrimaryKeyRelatedField(
@@ -66,13 +67,17 @@ class PeliculaDetalleSerializer(serializers.ModelSerializer):
         model = Pelicula
         fields = (
             "id_pelicula", "titulo", "descripcion", "fecha_estreno",
-            "duracion", "clasificacion", "miniatura",
+            "duracion", "clasificacion", "miniatura", "tiene_video",
             "actores", "directores", "generos",
             "actores_detalle", "directores_detalle", "generos_detalle"
         )
         extra_kwargs = {
             'miniatura': {'required': False}
         }
+
+    def get_tiene_video(self, obj):
+        """Verifica si la película tiene al menos un asset de video disponible"""
+        return obj.assets.filter(es_trailer=False).exists()
 
     def create(self, validated_data):
         actores_data = validated_data.pop('actores', [])

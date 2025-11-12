@@ -309,10 +309,11 @@ const Home = () => {
             </div>
             <p className="modal-description">{selectedMovie.descripcion}</p>
             <button
-              className="btn-play"
-              onClick={() => handlePlay(selectedMovie.id_pelicula)}
+              className={`btn-play ${!selectedMovie.tiene_video ? 'btn-disabled' : ''}`}
+              onClick={() => selectedMovie.tiene_video && handlePlay(selectedMovie.id_pelicula)}
+              disabled={!selectedMovie.tiene_video}
             >
-              ▶ Reproducir
+              {selectedMovie.tiene_video ? '▶ Reproducir' : '🔒 Próximamente'}
             </button>
             {selectedMovie.generos && selectedMovie.generos.length > 0 && (
               <div className="modal-section">
