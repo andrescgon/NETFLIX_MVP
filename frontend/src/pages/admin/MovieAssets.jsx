@@ -21,6 +21,7 @@ const MovieAssets = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [playingVideo, setPlayingVideo] = useState(null);
 
   const [uploadForm, setUploadForm] = useState({
     calidad: '1080p',
@@ -255,14 +256,12 @@ const MovieAssets = () => {
                   <span>Subido: {new Date(asset.creado_en).toLocaleDateString('es-ES')}</span>
                 </div>
                 {asset.archivo && (
-                  <a
-                    href={asset.archivo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="asset-link"
+                  <button
+                    onClick={() => setPlayingVideo(asset)}
+                    className="asset-link-button"
                   >
-                    Ver video →
-                  </a>
+                    ▶ Ver video
+                  </button>
                 )}
               </div>
               <button
@@ -386,6 +385,33 @@ const MovieAssets = () => {
               <button className="btn-confirm-delete" onClick={() => handleDelete(deleteConfirm.id)}>
                 Eliminar
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de reproducción de video */}
+      {playingVideo && (
+        <div className="modal-overlay" onClick={() => setPlayingVideo(null)}>
+          <div className="modal-content modal-video-player" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-video" onClick={() => setPlayingVideo(null)}>
+              ✕
+            </button>
+            <h2>{playingVideo.archivo ? playingVideo.archivo.split('/').pop() : 'Video'}</h2>
+            <div className="video-player-container">
+              <video
+                controls
+                autoPlay
+                className="video-player"
+                key={playingVideo.id}
+              >
+                <source src={playingVideo.archivo} type={playingVideo.mime_type || 'video/mp4'} />
+                Tu navegador no soporta la reproducción de video.
+              </video>
+            </div>
+            <div className="video-info">
+              <span className="badge badge-type">{playingVideo.es_trailer ? 'Tráiler' : 'Película Completa'}</span>
+              {playingVideo.calidad && <span className="badge badge-quality">{playingVideo.calidad}</span>}
             </div>
           </div>
         </div>

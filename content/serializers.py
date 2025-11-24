@@ -31,7 +31,7 @@ class PeliculaListaSerializer(serializers.ModelSerializer):
 
     def get_miniatura(self, obj):
         if obj.miniatura:
-            # Devolver solo la ruta relativa, no la URL absoluta
+            # Devolver solo la ruta relativa para que Vite proxy funcione
             return obj.miniatura.url
         return None
 

@@ -5,9 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true, // escucha en 0.0.0.0
+    port: 80,
+    host: true, 
     allowedHosts: [
-      'ec2-54-196-222-22.compute-1.amazonaws.com', // tu DNS público
+      'ec2-54-196-222-22.compute-1.amazonaws.com', 
     ],
     hmr: {
       host: 'ec2-54-196-222-22.compute-1.amazonaws.com',

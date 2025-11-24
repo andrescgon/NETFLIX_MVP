@@ -193,6 +193,24 @@
   text-decoration: underline;
 }
 
+.asset-link-button {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.asset-link-button:hover {
+  background: #f40612;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+}
+
 .btn-delete-asset {
   position: absolute;
   top: 1rem;
@@ -267,6 +285,58 @@
   max-width: 500px;
   width: 90%;
   border: 1px solid #333;
+}
+
+.modal-video-player {
+  max-width: 1200px;
+  width: 95%;
+  padding: 1.5rem;
+}
+
+.modal-close-video {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.modal-close-video:hover {
+  background: #e50914;
+  transform: rotate(90deg);
+}
+
+.video-player-container {
+  width: 100%;
+  margin: 1.5rem 0;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-player {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  display: block;
+}
+
+.video-info {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: center;
 }
 
 .modal-content h2 {
